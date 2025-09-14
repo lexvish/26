@@ -8,7 +8,7 @@ st.set_page_config(page_title="International Security NN Simulator", layout="wid
 st.title("🌍 Neural Network Simulator for 20 Countries")
 
 # -------------------------------
-# 1. Define countries and weights
+# 1. Define countries and initial weights
 # -------------------------------
 countries = [
     "USA", "China", "Germany", "Russia", "UK", "France",
@@ -50,7 +50,7 @@ flags = {
 }
 
 # -------------------------------
-# 3. User input: country impact
+# 3. Sidebar: user-adjustable country impacts
 # -------------------------------
 st.sidebar.header("Adjust Country Impact")
 user_inputs = {}
@@ -64,39 +64,7 @@ weights_updated = np.array(list(user_inputs.values()))
 weights_normalized = weights_updated / np.sum(weights_updated)
 
 # -------------------------------
-# 4. Display updated table with flags
+# 4. Display flags + normalized weights
 # -------------------------------
-df = pd.DataFrame({
-    "Country": countries,
-    "Flag": [flags[c] for c in countries],
-    "Normalized Weight": weights_normalized.round(3)
-})
-
 st.subheader("Country Weights with Flags")
-for idx, row in df.iterrows():
-    st.image(row["Flag"], width=30, caption=row["Country"], output_format="PNG")
-    st.write(f"Normalized Weight: {row['Normalized Weight']}")
-
-# -------------------------------
-# 5. Visualize as bar chart
-# -------------------------------
-fig = px.bar(
-    df,
-    x="Country",
-    y="Normalized Weight",
-    text="Normalized Weight",
-    color="Normalized Weight",
-    color_continuous_scale="Viridis",
-    title="Country Weight Distribution"
-)
-fig.update_layout(xaxis_title="Country", yaxis_title="Normalized Weight", showlegend=False)
-st.plotly_chart(fig, use_container_width=True)
-
-# -------------------------------
-# 6. Simple neural network simulation
-# -------------------------------
-st.subheader("Neural Network Output Simulation")
-# Simple one-layer weighted sum as example
-inputs = np.random.rand(len(countries))  # Random input vector
-output = np.dot(inputs, weights_normalized)
-st.write(f"Simulated output (weighted sum): {output:.3f}")
+for country, flag
