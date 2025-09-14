@@ -7,7 +7,7 @@ st.set_page_config(page_title="International Security NN Simulator", layout="wid
 st.title("🌍 Neural Network Simulator for 20 Countries")
 
 # -------------------------------
-# 1. Define countries and initial weights
+# 1. Define countries and their GDPs (in trillion USD)
 # -------------------------------
 countries = [
     "USA", "China", "Germany", "Russia", "UK", "France",
@@ -16,20 +16,20 @@ countries = [
     "Sweden", "Switzerland"
 ]
 
-# Example GDP-based weight coefficients (normalized)
-weights = np.array([
-    0.25, 0.22, 0.08, 0.07, 0.06, 0.05, 0.04, 0.03, 0.02, 0.02,
-    0.015, 0.015, 0.01, 0.01, 0.009, 0.008, 0.007, 0.006, 0.005, 0.004
-])
+gdp_values = [
+    27.721, 17.734, 4.659, 2.021, 3.070, 3.052, 4.026, 3.568, 2.229, 2.064,
+    2.003, 1.803, 1.776, 1.531, 1.385, 1.269, 1.016, 0.794, 0.758, 0.673
+]
 
 # -------------------------------
 # 2. Sidebar: user-adjustable country impacts
 # -------------------------------
 st.sidebar.header("Adjust Country Impact")
 user_inputs = {}
-for country, weight in zip(countries, weights):
+for country, gdp in zip(countries, gdp_values):
+    # scale GDP to roughly 0-1 for slider
     user_inputs[country] = st.sidebar.slider(
-        f"{country} impact", 0.0, 1.0, float(weight), 0.01
+        f"{country} impact", 0.0, 1.0, float(gdp) / 30.0, 0.01
     )
 
 # Normalize the updated weights
@@ -44,23 +44,30 @@ for country, weight in zip(countries, weights_normalized):
     st.write(f"**{country}** — Normalized Weight: {weight:.3f}")
 
 # -------------------------------
-# 4. Bar chart visualization
+# 4. Bar chart visualization (2 decimal digits)
 # -------------------------------
 df = pd.DataFrame({
     "Country": countries,
     "Normalized Weight": weights_normalized
 })
 
+# Format weights to 2 decimal digits for display
+df["Normalized Weight Text"] = df["Normalized Weight"].apply(lambda x: f"{x:.2f}")
+
 fig = px.bar(
     df,
     x="Country",
     y="Normalized Weight",
-    text="Normalized Weight",
+    text="Normalized Weight Text",
     color="Normalized Weight",
     color_continuous_scale="Viridis",
     title="Country Weight Distribution"
 )
-fig.update_layout(xaxis_title="Country", yaxis_title="Normalized Weight", showlegend=False)
+fig.update_layout(
+    xaxis_title="Country",
+    yaxis_title="Normalized Weight",
+    showlegend=False
+)
 st.plotly_chart(fig, use_container_width=True)
 
 # -------------------------------
