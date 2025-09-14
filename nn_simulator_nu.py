@@ -45,14 +45,14 @@ weights_normalized = weights_updated / np.sum(weights_updated)
 # -------------------------------
 # 3. Display flags + normalized weights
 # -------------------------------
-st.subheader("Country Weights with Flags")
-for country, iso, weight in zip(countries, iso_codes, weights_normalized):
-    cols = st.columns([1, 3])
-    with cols[0]:
-        img = Image.open(f"flags/{iso}.png")
-        st.image(img, width=40)
-    with cols[1]:
-        st.write(f"**{country}** — Normalized Weight: {weight:.3f}")
+#st.subheader("Country Weights with Flags")
+#for country, iso, weight in zip(countries, iso_codes, weights_normalized):
+    #cols = st.columns([1, 3])
+    #with cols[0]:
+        #img = Image.open(f"flags/{iso}.png")
+        #st.image(img, width=40)
+    #with cols[1]:
+        #st.write(f"**{country}** — Normalized Weight: {weight:.3f}")
 
 # -------------------------------
 # 4. Bar chart visualization
