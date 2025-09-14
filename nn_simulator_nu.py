@@ -56,4 +56,48 @@ st.sidebar.header("Adjust Country Impact")
 user_inputs = {}
 for country, weight in zip(countries, weights):
     user_inputs[country] = st.sidebar.slider(
-        f"{country} impact", 0.0, 1.0, float(
+        f"{country} impact", 0.0, 1.0, float(weight), 0.01
+    )
+
+# Normalize the updated weights
+weights_updated = np.array(list(user_inputs.values()))
+weights_normalized = weights_updated / np.sum(weights_updated)
+
+# -------------------------------
+# 4. Display flags + normalized weights
+# -------------------------------
+st.subheader("Country Weights with Flags")
+for country, flag_url, weight in zip(countries, [flags[c] for c in countries], weights_normalized):
+    cols = st.columns([1, 3])
+    with cols[0]:
+        st.image(flag_url, width=40)
+    with cols[1]:
+        st.write(f"**{country}** — Normalized Weight: {weight:.3f}")
+
+# -------------------------------
+# 5. Bar chart visualization
+# -------------------------------
+df = pd.DataFrame({
+    "Country": countries,
+    "Normalized Weight": weights_normalized
+})
+
+fig = px.bar(
+    df,
+    x="Country",
+    y="Normalized Weight",
+    text="Normalized Weight",
+    color="Normalized Weight",
+    color_continuous_scale="Viridis",
+    title="Country Weight Distribution"
+)
+fig.update_layout(xaxis_title="Country", yaxis_title="Normalized Weight", showlegend=False)
+st.plotly_chart(fig, use_container_width=True)
+
+# -------------------------------
+# 6. Simple neural network simulation
+# -------------------------------
+st.subheader("Neural Network Output Simulation")
+inputs = np.random.rand(len(countries))  # Random input vector
+output = np.dot(inputs, weights_normalized)
+st.write(f"Simulated output (weighted sum): {output:.3f}")
