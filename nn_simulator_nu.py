@@ -2,7 +2,6 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import plotly.express as px
-from PIL import Image
 
 st.set_page_config(page_title="International Security NN Simulator", layout="wide")
 st.title("🌍 Neural Network Simulator for 20 Countries")
@@ -15,11 +14,6 @@ countries = [
     "Japan", "India", "Canada", "Brazil", "Italy", "South Korea",
     "Australia", "Spain", "Mexico", "Netherlands", "Turkey", "Saudi Arabia",
     "Sweden", "Switzerland"
-]
-
-iso_codes = [
-    "us", "cn", "de", "ru", "gb", "fr", "jp", "in", "ca", "br",
-    "it", "kr", "au", "es", "mx", "nl", "tr", "sa", "se", "ch"
 ]
 
 # Example GDP-based weight coefficients (normalized)
@@ -43,16 +37,11 @@ weights_updated = np.array(list(user_inputs.values()))
 weights_normalized = weights_updated / np.sum(weights_updated)
 
 # -------------------------------
-# 3. Display flags + normalized weights
+# 3. Display normalized weights
 # -------------------------------
-#st.subheader("Country Weights with Flags")
-#for country, iso, weight in zip(countries, iso_codes, weights_normalized):
-    #cols = st.columns([1, 3])
-    #with cols[0]:
-        #img = Image.open(f"flags/{iso}.png")
-        #st.image(img, width=40)
-    #with cols[1]:
-        #st.write(f"**{country}** — Normalized Weight: {weight:.3f}")
+st.subheader("Country Normalized Weights")
+for country, weight in zip(countries, weights_normalized):
+    st.write(f"**{country}** — Normalized Weight: {weight:.3f}")
 
 # -------------------------------
 # 4. Bar chart visualization
