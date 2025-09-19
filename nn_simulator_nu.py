@@ -76,4 +76,4 @@ st.plotly_chart(fig, use_container_width=True)
 st.subheader("Neural Network Output Simulation")
 inputs = np.random.rand(len(countries))  # Random input vector
 output = np.dot(inputs, weights_normalized)
-st.write(f"Simulated output (weighted sum): {output:.3f}")
+st.write(f"Simulated output (weighted sum): {output:.2f}")
