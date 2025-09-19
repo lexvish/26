@@ -29,7 +29,7 @@ user_inputs = {}
 for country, gdp in zip(countries, gdp_values):
     # scale GDP to roughly 0-1 for slider
     user_inputs[country] = st.sidebar.slider(
-        f"{country} impact", 0.0, 1.0, float(gdp) / 30.0, 0.01
+        f"{country}", 0.0, 1.0, float(gdp) / 30.0, 0.01
     )
 
 # Normalize the updated weights
